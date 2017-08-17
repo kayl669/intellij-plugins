@@ -1,6 +1,7 @@
 package com.intellij.lang.javascript.flex.projectStructure.model.impl;
 
 import com.intellij.ProjectTopics;
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.lang.javascript.flex.projectStructure.model.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -173,7 +174,9 @@ public class FlexBuildConfigurationManagerImpl extends FlexBuildConfigurationMan
   }
 
   static void resetHighlighting(Project project) {
-    ProjectRootManagerEx.getInstanceEx(project).makeRootsChange(EmptyRunnable.getInstance(), false, true);
+    if (!PropertiesComponent.getInstance().getBoolean("Charm.Flex.SkipFileRefresh", true)) {
+      ProjectRootManagerEx.getInstanceEx(project).makeRootsChange(EmptyRunnable.getInstance(), false, true);
+    }
   }
 
   private FlexBuildConfigurationImpl[] getValidatedConfigurations(Collection<? extends FlexBuildConfigurationImpl> configurations) {
